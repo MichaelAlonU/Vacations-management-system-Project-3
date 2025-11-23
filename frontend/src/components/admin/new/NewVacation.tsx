@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import './NewMeet.css';
-import TeamsService from '../../../services/teams';
-import MeetingsService from '../../../services/meetings';
-import { Team } from '../../../models/Teams';
-import { MeetDraft } from '../../../models/MeetDraft';
-export default function NewMeet() {
+import './NewVacation.css';
+// import TeamsService from '../../../services/teams';
+// import MeetingsService from '../../../services/meetings';
+// import { Team } from '../../../models/Teams';
+// import { MeetDraft } from '../../../models/MeetDraft';
+export default function NewVacation() {
     const [teams, setTeams] = useState<Team[]>([]);
     const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<MeetDraft>();
 
@@ -25,15 +25,15 @@ export default function NewMeet() {
     }
 
     return (
-        <div className='NewMeet'>
-            <h3>New Meeting</h3>
-            <form onSubmit={handleSubmit(onSubmit)} className='new-meet-form'>
+        <div className='NewVacation'>
+            <h3>New Vacation</h3>
+            <form onSubmit={handleSubmit(onSubmit)} className='new-vacation-form'>
                 <label>Team</label>
-                <select {...register('teamId', { required: 'Please choose a team' })}>
+                {/* <select {...register('teamId', { required: 'Please choose a team' })}>
                     <option value=''>-- choose team --</option>
                     {teams.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
                 </select>
-                <div className='formError'>{errors.teamId?.message}</div>
+                <div className='formError'>{errors.teamId?.message}</div> */}
 
                 <label>Start time</label>
                 <input type='datetime-local' {...register('startTime', { required: 'Start time is required' })} />

@@ -6,12 +6,18 @@ import { NextFunction, Request, Response } from "express";
 // import postIncludes from "../common/post-includes";
 import Vacation from "../../models/Vacation";
 import Follow from "../../models/Follow";
+import User from "../../models/User";
 
 export async function getAll(req: Request, res: Response, next: NextFunction) {
 
     try {
         const vacations = await Vacation.findAll({
-            include: [Follow]
+            include: [{
+                model: User,
+                attributes: ["id"],
+                through: { attributes: [] } 
+            }
+            ]
         })
         res.json(vacations)
     } catch (e) {
@@ -22,9 +28,9 @@ export async function getAll(req: Request, res: Response, next: NextFunction) {
 export async function createNewVacation(req: Request, res: Response, next: NextFunction) {
 
     try {
-        const newVacation = await Vacation.create({ 
-            ...req.body, 
-            imageUrl: req.imageUrl 
+        const newVacation = await Vacation.create({
+            ...req.body,
+            imageUrl: req.imageUrl
         })
         res.json(newVacation)
     } catch (e) {
@@ -45,7 +51,7 @@ export async function updateVacation(req: Request<{ id: string }>, res: Response
         vacation.startTime = startTime
         vacation.endTime = endTime
         vacation.price = price
-    
+
         await vacation.save()
         res.json(vacation)
     } catch (e) {

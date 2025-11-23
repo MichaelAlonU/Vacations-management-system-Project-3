@@ -5,6 +5,7 @@ import config from 'config'
 interface JwtUser {
     id: string;
     firstName: string;
+    lastName: string;
     email: string;
     roleName: string;
 }
