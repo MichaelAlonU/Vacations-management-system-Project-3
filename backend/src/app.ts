@@ -31,8 +31,8 @@ app.use('/vacations', vacationsRouter)
 app.use(notFound)
 
 // error middlewares
-app.use(logger)
-app.use(responder)
+// app.use(logger)
+// app.use(responder)
 
 
 (async () => {
