@@ -3,6 +3,7 @@ import { authorize } from "../middlewares/authorize";
 import validation from "../middlewares/validation";
 import { createNewVacationValidator, updateVacationValidator } from "../controllers/vacations/validator";
 import { createNewVacation, deleteVacation, getAll, updateVacation } from "../controllers/vacations/controller";
+import fileUploader from "../middlewares/file-uploader";
 // import { createMeet, /*filterByMaxPrice,*/ filterByTeam } from "../controllers/meeting/controller";
 // import { createMeetValidator, meetingsByTeamIdValidator } from "../controllers/meeting/validator";
 // import paramValidation from "../middlewares/param-validation";
@@ -11,8 +12,8 @@ const router = Router()
 
 // router.get('/by-team/:teamId', paramValidation(meetingsByTeamIdValidator) , filterByTeam)
 router.get('/', getAll)
-router.post('/', authorize(`ADMIN`), validation(createNewVacationValidator), createNewVacation)
-router.patch('/:id', authorize(`ADMIN`), validation(updateVacationValidator), updateVacation)
+router.post('/', authorize(`ADMIN`), fileUploader, validation(createNewVacationValidator), createNewVacation)
+router.patch('/:id', authorize(`ADMIN`), fileUploader, validation(updateVacationValidator), updateVacation)
 router.delete('/:id', authorize(`ADMIN`), deleteVacation)
 
 export default router

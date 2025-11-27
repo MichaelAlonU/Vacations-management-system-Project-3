@@ -33,7 +33,7 @@ export default function VacationCard({ vacation, isEditAllowed, isDeleteAllowed,
     return (
         <div className="VacationCard">
             <h3>{vacation.destination}</h3>
-            <img src={vacation.imageUrl} alt={vacation.destination} />
+            <img src={`${import.meta.env.VITE_S3_URL}${vacation.imageUrl}`} alt={vacation.destination} />
 
             <p>{vacation.description}</p>
             <p>{vacation.price}$</p>

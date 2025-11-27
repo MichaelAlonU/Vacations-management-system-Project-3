@@ -1,0 +1,108 @@
+.NotFound {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.NotFound h1 {
+    color: white;
+    font-size: 4rem;
+    margin: 0 0 1rem;
+    font-weight: 800;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.NotFound p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.25rem;
+    margin: 0 0 2rem;
+    animation: slideUp 0.5s ease-out 0.1s both;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.NotFound a {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: var(--shadow-md);
+    animation: slideUp 0.5s ease-out 0.2s both;
+}
+
+.NotFound a:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .NotFound h1 {
+        font-size: 3rem;
+    }
+
+    .NotFound p {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .NotFound {
+        padding: 1rem;
+    }
+
+    .NotFound h1 {
+        font-size: 2rem;
+    }
+
+    .NotFound p {
+        font-size: 1rem;
+        margin: 0 0 1.5rem;
+    }
+
+    .NotFound a {
+        padding: 0.875rem 1.5rem;
+        font-size: 0.95rem;
+    }
+}

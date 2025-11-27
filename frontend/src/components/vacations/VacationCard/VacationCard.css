@@ -1,0 +1,129 @@
+.VacationCard {
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    animation: scaleIn 0.4s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.VacationCard:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+.VacationCard img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.VacationCard:hover img {
+    transform: scale(1.05);
+    filter: brightness(0.9);
+}
+
+.VacationCard h3 {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    margin: 1rem 1rem 0.5rem;
+    font-weight: 700;
+}
+
+.VacationCard p {
+    color: var(--text-secondary);
+    margin: 0.5rem 1rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.VacationCard p:last-of-type {
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 1.25rem;
+    margin: 0.5rem 1rem 1rem;
+}
+
+.VacationCard button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin: 0.5rem 1rem;
+    font-size: 0.95rem;
+}
+
+.VacationCard button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.VacationCard button.liked {
+    background: var(--danger-color);
+}
+
+.VacationCard button.liked:hover {
+    background: #dc2626;
+}
+
+.VacationCard .edit-btn {
+    background: var(--warning-color);
+}
+
+.VacationCard .edit-btn:hover {
+    background: #d97706;
+}
+
+.VacationCard .delete-btn {
+    background: var(--danger-color);
+}
+
+.VacationCard .delete-btn:hover {
+    background: #dc2626;
+}
+
+/* Like button with emoji */
+.VacationCard button {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    width: calc(100% - 2rem);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .VacationCard {
+        border-radius: 8px;
+    }
+
+    .VacationCard img {
+        height: 150px;
+    }
+
+    .VacationCard h3 {
+        font-size: 1.1rem;
+    }
+
+    .VacationCard p {
+        font-size: 0.9rem;
+    }
+}

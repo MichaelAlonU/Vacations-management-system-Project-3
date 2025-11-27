@@ -19,39 +19,52 @@ export default function EditVacation() {
     const navigate = useNavigate();
     const vacationService = useService(VacationService);
     const [isReady, setIsReady] = useState(false);
+    const [preview, setPreview] = useState<string | null>(null);
 
     const { register, handleSubmit, reset, formState: { errors, isSubmitting } } =
         useForm<VacationDraft>({
             resolver: joiResolver(updateVacationValidator)
         });
 
-useEffect(() => {
-    (async () => {
+        useEffect(() => {
+        (async () => {
 
-        let vac = vacation;
-
-        if (!vac) {
-            const vacationsFromServer = await vacationService.getAll();
-            dispatch(init(vacationsFromServer));
-            vac = vacationsFromServer.find(v => v.id === id);
+            let vac = vacation;
 
             if (!vac) {
-                alert("Vacation not found");
-                navigate("/vacations");
-                return;
+                const vacationsFromServer = await vacationService.getAll();
+                dispatch(init(vacationsFromServer));
+                vac = vacationsFromServer.find(v => v.id === id);
+
+                if (!vac) {
+                    alert("Vacation not found");
+                    navigate("/vacations");
+                    return;
+                }
             }
+            const { destination, description, startTime, endTime, price} = vac
+            const draft = { destination, description, startTime, endTime, price, image: null }
+            reset(draft)
+
+            setIsReady(true);
+
+        })();
+    }, [id, vacation, dispatch, reset]);
+
+    function previewImage(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0];
+        if (file) {
+            setPreview(URL.createObjectURL(file));
+        } else {
+            setPreview(null);
         }
-        const {destination, description, startTime, endTime, price, image} = vac
-        const draft = {destination, description, startTime, endTime, price, image}
-        reset(draft)
-
-        setIsReady(true);
-
-    })();
-}, [id, vacation, dispatch, reset]);
+    }
 
     async function submit(draft: VacationDraft) {
         try {
+            if (draft.image) {
+                draft.image = (draft.image as unknown as FileList)[0];
+            }
             await vacationService.editVacation(id!, draft);
             alert('Vacation updated successfully');
             navigate('/vacations');
@@ -91,8 +104,14 @@ useEffect(() => {
                         <div className='formError'>{errors.price?.message}</div>
 
                         <label>Image</label>
-                        <input type="file" accept='image/*' {...register('image')} />
+                        <input type="file" accept="image/*" {...register('image')} onChange={previewImage} />
+                        {preview ? (
+                            <img src={preview} style={{ width: 200, marginTop: 10 }} />
+                        ) : (
+                            vacation?.imageUrl && <img src={`${import.meta.env.VITE_S3_URL}${vacation?.imageUrl}`} style={{ width: 200, marginTop: 10 }} />
+                        )}
                         <div className='formError'>{errors.image?.message}</div>
+                        <button type="button" onClick={() => { setPreview(null) }}> Remove Image </button>
 
                         <SpinnerButton
                             buttonText='Update Vacation'

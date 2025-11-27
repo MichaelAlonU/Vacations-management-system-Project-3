@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import UserDraft from "../../../models/UserDraft";
 import authService from "../../../services/auth";
+import './Signup.css';
 
 export default function Signup() {
 
@@ -25,60 +26,70 @@ export default function Signup() {
     }
 
     return (
-        <form onSubmit={handleSubmit(submit)} className="auth-form">
+        <div className="Signup">
+            <form onSubmit={handleSubmit(submit)} className="auth-form">
 
-            <h2>Sign Up</h2>
+                <h2>Sign Up</h2>
 
-            <label>First Name:</label>
-            <input
-                {...register("firstName", {
-                    required: "First name is required",
-                    minLength: {
-                        value: 2,
-                        message: "First name must be at least 2 characters long"
-                    }
-                })}
-                type="text"
-            />
-            {errors.firstName && <p className="error">{errors.firstName.message}</p>}
+                <div className="form-group">
+                    <label>First Name:</label>
+                    <input
+                        {...register("firstName", {
+                            required: "First name is required",
+                            minLength: {
+                                value: 2,
+                                message: "First name must be at least 2 characters long"
+                            }
+                        })}
+                        type="text"
+                    />
+                    {errors.firstName && <p className="error">{errors.firstName.message}</p>}
+                </div>
 
-            <label>Last Name:</label>
-            <input
-                {...register("lastName", {
-                    required: "Last name is required",
-                    minLength: {
-                        value: 2,
-                        message: "Last name must be at least 2 characters long"
-                    }
-                })}
-                type="text"
-            />
-            {errors.lastName && <p className="error">{errors.lastName.message}</p>}
+                <div className="form-group">
+                    <label>Last Name:</label>
+                    <input
+                        {...register("lastName", {
+                            required: "Last name is required",
+                            minLength: {
+                                value: 2,
+                                message: "Last name must be at least 2 characters long"
+                            }
+                        })}
+                        type="text"
+                    />
+                    {errors.lastName && <p className="error">{errors.lastName.message}</p>}
+                </div>
 
-            <label>Email:</label>
-            <input
-                {...register("email", {
-                    required: "Required",
-                    pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: "Invalid email"
-                    }
-                })}
-                type="email"
-            />
-            {errors.email && <p className="error">{errors.email.message}</p>}
+                <div className="form-group">
+                    <label>Email:</label>
+                    <input
+                        {...register("email", {
+                            required: "Required",
+                            pattern: {
+                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: "Invalid email"
+                            }
+                        })}
+                        type="email"
+                    />
+                    {errors.email && <p className="error">{errors.email.message}</p>}
+                </div>
 
-            <label>Password:</label>
-            <input
-                {...register("password", {
-                    required: "Required",
-                    minLength: { value: 4, message: "Password must have minimum 4 characters"}
-                })}
-                type="password"
-            />
-            {errors.password && <p className="error">{errors.password.message}</p>}
+                <div className="form-group">
+                    <label>Password:</label>
+                    <input
+                        {...register("password", {
+                            required: "Required",
+                            minLength: { value: 4, message: "Password must have minimum 4 characters"}
+                        })}
+                        type="password"
+                    />
+                    {errors.password && <p className="error">{errors.password.message}</p>}
+                </div>
 
-            <button>Sign Up</button>
-        </form>
+                <button>Sign Up</button>
+            </form>
+        </div>
     );
 }

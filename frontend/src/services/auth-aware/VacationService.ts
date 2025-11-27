@@ -24,7 +24,10 @@ export default class VacationService extends AuthAware {
     }
 
     async editVacation(id: string, draft: VacationDraft): Promise<Vacation> {
-        const response = await this.axiosInstance.patch<Vacation>(`/vacations/${id}`, draft);
+        const response = await this.axiosInstance.patch<Vacation>(`/vacations/${id}`, draft, {            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+});
         return response.data;
     }
 }

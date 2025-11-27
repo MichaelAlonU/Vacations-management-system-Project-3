@@ -10,14 +10,14 @@ import { URL } from 'url'
 declare global {
     namespace Express {
         interface Request {
-            imageUrl: string
+            imageUrl?: string
         }
     }
 }
 
 export default async function fileUploader(req: Request, res: Response, next: NextFunction) {
-    if (!req.files) next()
-    if (!req.files.image) next()
+    if (!req.files) return next()
+    if (!req.files.image) return next()
 
     console.log(req.files)    
 

@@ -5,5 +5,5 @@ export default interface VacationDraft {
     startTime: string;
     endTime: string;
     price: number;
-    image: File | null;
+    image?: File | null;
 }

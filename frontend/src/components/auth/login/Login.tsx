@@ -6,6 +6,7 @@ import { login } from "../../../redux/auth-slice";
 import authService from "../../../services/auth";
 import { useNavigate } from "react-router-dom";
 import LoginModel from "../../../models/LoginModel";
+import './Login.css';
 
 export default function Login() {
 
@@ -32,39 +33,45 @@ export default function Login() {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="login-form">
+        <div className="Login">
+            <form onSubmit={handleSubmit(onSubmit)} className="login-form">
 
-            <h2>Login</h2>
+                <h2>Login</h2>
 
-            <label>Email:</label>
-            <input
-                {...register("email", {
-                    required: "Email is required",
-                    pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: "Email is invalid"
-                    }
-                })}
-                type="email"
-            />
-            {errors.email && <p className="error">{errors.email.message}</p>}
+                <div className="form-group">
+                    <label>Email:</label>
+                    <input
+                        {...register("email", {
+                            required: "Email is required",
+                            pattern: {
+                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: "Email is invalid"
+                            }
+                        })}
+                        type="email"
+                    />
+                    {errors.email && <p className="error">{errors.email.message}</p>}
+                </div>
 
-            <label>Password:</label>
-            <input
-                {...register("password", {
-                    required: "Password is required",
-                    minLength: { value: 4, message: "Minimum 4 characters" }
-                })}
-                type="password"
-            />
-            {errors.password && <p className="error">{errors.password.message}</p>}
+                <div className="form-group">
+                    <label>Password:</label>
+                    <input
+                        {...register("password", {
+                            required: "Password is required",
+                            minLength: { value: 4, message: "Minimum 4 characters" }
+                        })}
+                        type="password"
+                    />
+                    {errors.password && <p className="error">{errors.password.message}</p>}
+                </div>
 
-            <button type="submit">Login</button>
-            <SpinnerButton
-                buttonText='Login'
-                loadingText='logging in...'
-                isSubmitting={isSubmitting}
-            />
-        </form>
+                <button type="submit">Login</button>
+                <SpinnerButton
+                    buttonText='Login'
+                    loadingText='logging in...'
+                    isSubmitting={isSubmitting}
+                />
+            </form>
+        </div>
     )
 };

@@ -1,11 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-// import Post from "../../models/Post";
-// import User from "../../models/User";
-// import Comment from "../../models/Comment";
-// import { newPostValidator } from "./validator";
-// import postIncludes from "../common/post-includes";
 import Vacation from "../../models/Vacation";
-import Follow from "../../models/Follow";
 import User from "../../models/User";
 
 export async function getAll(req: Request, res: Response, next: NextFunction) {
@@ -30,7 +24,7 @@ export async function createNewVacation(req: Request, res: Response, next: NextF
     try {
         const newVacation = await Vacation.create({
             ...req.body,
-            imageUrl: req.imageUrl
+            imageUrl: req.imageUrl     
         })
         res.json(newVacation)
     } catch (e) {
@@ -51,6 +45,9 @@ export async function updateVacation(req: Request<{ id: string }>, res: Response
         vacation.startTime = startTime
         vacation.endTime = endTime
         vacation.price = price
+        if (req.imageUrl) {
+            vacation.imageUrl = req.imageUrl;
+        }
 
         await vacation.save()
         res.json(vacation)

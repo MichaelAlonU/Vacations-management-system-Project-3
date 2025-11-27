@@ -9,19 +9,19 @@ import cors from 'cors'
 import vacationsRouter from './routers/vacations'
 import authRouter from './routers/auth'
 import authenticate from './middlewares/authenticate';
+import fileUpload from 'express-fileupload';
 
 const app = express()
 
-const port = config.get<number>('app.port')
-const appName = config.get<string>('app.name')
-const secret = config.get<string>('app.secret')
+const port = Number(config.get<number>('app.port'))
+const appName = String(config.get<string>('app.name'))
+const secret = String(config.get<string>('app.secret'))
 
 console.log(`app secret is ${secret}`)
 
 app.use(cors())
-
+app.use(fileUpload())
 app.use(json())
-// app.use(fileUpload())
 
 app.use('/auth', authRouter)
 app.use(authenticate)

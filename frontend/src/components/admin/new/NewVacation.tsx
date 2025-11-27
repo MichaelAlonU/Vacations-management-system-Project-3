@@ -7,6 +7,7 @@ import VacationService from '../../../services/auth-aware/VacationService';
 import { useService } from '../../../hooks/use-service';
 import { useNavigate } from 'react-router-dom';
 import SpinnerButton from '../../common/spinner-button/SpinnerButton';
+import { useState } from 'react';
 
 export default function NewVacation() {
     const vacationService = useService(VacationService);
@@ -24,9 +25,22 @@ export default function NewVacation() {
         }
     });
 
+    const [preview, setPreview] = useState<string | null>(null);
+
+    function previewImage(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0];
+        if (file) {
+            setPreview(URL.createObjectURL(file));
+        } else {
+            setPreview(null);
+        }
+    }
+
     async function onSubmit(data: VacationDraft) {
 
-        data.image = (data.image as unknown as FileList)[0];
+        if (data.image) {
+            data.image = (data.image as unknown as FileList)[0];
+        }
         try {
             await vacationService.newVacation(data);
             alert('Vacation created');
@@ -65,7 +79,8 @@ export default function NewVacation() {
                 <div className='formError'>{errors.price?.message}</div>
 
                 <label> Image </label>
-                <input type="file" accept='image/*' {...register('image')} />
+                <input type="file" accept="image/*" {...register('image')} onChange={previewImage} />
+                {preview && <img src={preview} style={{ width: 200, marginTop: 10 }} />}
                 <div className='formError'>{errors.image?.message}</div>
 
                 <SpinnerButton
