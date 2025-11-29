@@ -18,7 +18,7 @@ export default function Main() {
             <Route path="/vacations" element={<Vacations />} />
             <Route path="/vacations/manage" element={<Admin />} />
             <Route path="/add-vacation" element={<NewVacation />} />
-            <Route path="/vacation/edit/:id" element={<EditVacation />} />
+            <Route path="/vacations/edit/:id" element={<EditVacation />} />
             {/* <Route path="/vacation/delete/:id" element={<Vacations/>} /> */}
             <Route path="/Forbidden" element={<Forbidden />} />
             <Route path="*" element={<NotFound />} />

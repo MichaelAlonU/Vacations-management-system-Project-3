@@ -11,6 +11,7 @@ export default function Header() {
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
     const isAdmin = useSelector((state: RootState) => state.auth.user?.isAdmin);
     const dispatch = useDispatch();
+    console.log("SERVER URL =", import.meta.env.VITE_REST_SERVER_URL);
 
     return (
 

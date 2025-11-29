@@ -13,9 +13,9 @@ import fileUpload from 'express-fileupload';
 
 const app = express()
 
-const port = Number(config.get<number>('app.port'))
-const appName = String(config.get<string>('app.name'))
-const secret = String(config.get<string>('app.secret'))
+const port = config.get<number>('app.port')
+const appName = config.get<string>('app.name')
+const secret = config.get<string>('app.secret')
 
 console.log(`app secret is ${secret}`)
 
@@ -31,8 +31,8 @@ app.use('/vacations', vacationsRouter)
 app.use(notFound)
 
 // error middlewares
-// app.use(logger)
-// app.use(responder)
+app.use(logger)
+app.use(responder);
 
 
 (async () => {

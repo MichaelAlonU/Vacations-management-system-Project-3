@@ -13,7 +13,7 @@ export default function NewVacation() {
     const vacationService = useService(VacationService);
     const navigate = useNavigate();
 
-    const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<VacationDraft>({
+    const { register, handleSubmit, reset, setValue, trigger, formState: { errors, isSubmitting } } = useForm<VacationDraft>({
         resolver: joiResolver(createNewVacationValidator),
         defaultValues: {
             destination: '',
@@ -21,14 +21,16 @@ export default function NewVacation() {
             startTime: '',
             endTime: '',
             price: 0,
-            image: undefined
+            image: null
         }
     });
 
     const [preview, setPreview] = useState<string | null>(null);
 
     function previewImage(e: React.ChangeEvent<HTMLInputElement>) {
-        const file = e.target.files?.[0];
+        const file = e.target.files?.[0] ?? null;
+        // setValue('image', file, { shouldValidate: true });
+        // trigger('image');
         if (file) {
             setPreview(URL.createObjectURL(file));
         } else {
@@ -37,15 +39,17 @@ export default function NewVacation() {
     }
 
     async function onSubmit(data: VacationDraft) {
-
+        console.log(`onSubmit data: `, data)
         if (data.image) {
             data.image = (data.image as unknown as FileList)[0];
+        } else {
+            return;
         }
         try {
             await vacationService.newVacation(data);
             alert('Vacation created');
             reset();
-            navigate('/Admin');
+            navigate('/vacations/manage');
         } catch (err) {
             console.error(err);
             alert('Failed to create vacation');
@@ -79,9 +83,29 @@ export default function NewVacation() {
                 <div className='formError'>{errors.price?.message}</div>
 
                 <label> Image </label>
-                <input type="file" accept="image/*" {...register('image')} onChange={previewImage} />
+                <input
+                    type="file"
+                    accept="image/*"
+                    {...register('image'
+                        , {
+                        required: 'Image is required',
+                        validate: {
+                            fileType: (file: File | null | undefined) => {
+                                if (!file) return 'Image is required';
+                                return ['image/jpeg', 'image/png'].includes(file.type) || 'Only JPEG or PNG allowed';
+                            }
+                        }
+                    }
+                )}
+                    onChange={previewImage}
+                />
                 {preview && <img src={preview} style={{ width: 200, marginTop: 10 }} />}
+
                 <div className='formError'>{errors.image?.message}</div>
+
+                {/* <input type="file" accept="image/*" {...register('image')} onChange={previewImage} />
+                {preview && <img src={preview} style={{ width: 200, marginTop: 10 }} />}
+                <div className='formError'>{errors.image?.message}</div> */}
 
                 <SpinnerButton
                     buttonText='Add Vacation'

@@ -1,27 +1,33 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react"
 import UserDraft from "../../../models/UserDraft";
 import authService from "../../../services/auth";
 import './Signup.css';
+import SpinnerButton from "../../common/spinner-button/SpinnerButton";
 
 export default function Signup() {
 
     const { register, handleSubmit, formState: { errors } } = useForm<UserDraft>();
     const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     async function submit(data: UserDraft) {
 
         try {
+            setIsSubmitting(true);
             await authService.signup(data);
             alert("Signup successful!");
             navigate("/login");
         }
         catch (err: any) {
-            if (err.response?.status === 409) {
-                alert("Email already exists");
+            if (err.response?.status === 400) {
+                alert("Email already exists")
             } else {
-                alert("Signup failed");
+                alert("Signup failed" + err.message);
             }
+        } finally {
+            setIsSubmitting(false);
         }
     }
 
@@ -81,14 +87,18 @@ export default function Signup() {
                     <input
                         {...register("password", {
                             required: "Required",
-                            minLength: { value: 4, message: "Password must have minimum 4 characters"}
+                            minLength: { value: 4, message: "Password must have minimum 4 characters" }
                         })}
                         type="password"
                     />
                     {errors.password && <p className="error">{errors.password.message}</p>}
                 </div>
+                <SpinnerButton
+                    buttonText='Sign up'
+                    loadingText='Signing...'
+                    isSubmitting={isSubmitting}
+                />
 
-                <button>Sign Up</button>
             </form>
         </div>
     );

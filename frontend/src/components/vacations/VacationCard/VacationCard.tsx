@@ -3,6 +3,7 @@ import { useAppDispatcher } from '../../../redux/hooks';
 import { useService } from '../../../hooks/use-service';
 import FollowersService from '../../../services/auth-aware/FollowersService';
 import { follow, unfollow } from '../../../redux/vacationSlice';
+import { useNavigate } from 'react-router';
 
 interface Props {
     vacation: any;
@@ -15,7 +16,7 @@ export default function VacationCard({ vacation, isEditAllowed, isDeleteAllowed,
 
     const dispatcher = useAppDispatcher();
     const followersService = useService(FollowersService)
-
+    const navigate = useNavigate()
     async function toggleLike() {
         try {
             if (vacation.isFollowed) {
@@ -48,7 +49,7 @@ export default function VacationCard({ vacation, isEditAllowed, isDeleteAllowed,
             )}
 
             {isEditAllowed && (
-                <button className="edit-btn">
+                <button className="edit-btn" onClick={ () => navigate(`/vacations/edit/${vacation.id}`)}>
                     Edit
                 </button>
             )}

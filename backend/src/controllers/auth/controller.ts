@@ -45,6 +45,10 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
         const jwt = makeJwt(user);
         res.json({ jwt })
     } catch (e) {
+        if (e.message === 'email already in use') return next({
+            status: 400,
+            message: 'email already in use'
+        })
         next(e)
     }
 }

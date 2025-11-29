@@ -7,9 +7,10 @@ const s3Connection = JSON.parse(JSON.stringify(config.get<object>('s3.connection
 const s3Client = new S3Client(s3Connection)
 
 if (!config.get<boolean>(`s3.isLocalStack`)) delete s3Connection.endpoint;
-
+console.log(`im here! bucketttttttttttttttttttt`)
 export async function createAppBucketIfNotExists() {
     try {
+        console.log(`Created S3 bucket!`)
         const result = await s3Client.send(
             new CreateBucketCommand({
                 Bucket: config.get<string>('s3.bucket')

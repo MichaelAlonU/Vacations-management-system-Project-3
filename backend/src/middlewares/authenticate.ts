@@ -44,7 +44,12 @@ export default function authenticate(req: Request, res: Response, next: NextFunc
     try {
         const user = verify(jwt, jwtSecret) as JwtUser
         req.user = user
+        console.log(`========From athenticate middleware user: ==========`)
         console.log(user)
+        
+        console.log(`========From athenticate middleware req.files: ==========`)
+        console.log(req.files)
+
         next()
 
     } catch (e) {

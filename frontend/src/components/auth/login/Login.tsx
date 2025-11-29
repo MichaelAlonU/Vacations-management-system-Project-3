@@ -24,8 +24,12 @@ export default function Login() {
             dispatch(login(jwt));
             navigate("/vacations");
 
-        } catch (err) {
-            alert("Login failed");
+        } catch (err: any) {
+            if (err.response?.status === 401) {
+                alert("invalid email or password!");
+            } else {
+                alert("Login failed" + err.message);
+            }
             console.error(err);
         } finally {
             setIsSubmitting(false);
@@ -64,8 +68,6 @@ export default function Login() {
                     />
                     {errors.password && <p className="error">{errors.password.message}</p>}
                 </div>
-
-                <button type="submit">Login</button>
                 <SpinnerButton
                     buttonText='Login'
                     loadingText='logging in...'

@@ -2,7 +2,8 @@
     "app": {
         "port": 3000,
         "name": "Vacations are us",
-        "secret": "MySecret"
+        "secret": "MySecret",
+        "jwtSecret": "JwtVacSecret"
     },
     "db": {
         "host": "localhost",
@@ -12,7 +13,7 @@
         "database": "vacations_are_us_db"
     },
     "s3": {
-        "bucket": "imagesMU.weezer.com",
+        "bucket": "images-vacations-r-us",
         "isLocalStack": true,
         "connection": {
             "endpoint": "http://localhost:4566",

@@ -5,6 +5,8 @@ import Login from "../models/LoginModel";
 class AuthService {
 
     async signup(draft: UserDraft): Promise<{ jwt: string }> {
+        console.log(import.meta.env);
+
         const { data } = await axios.post<{ jwt: string }>(`${import.meta.env.VITE_REST_SERVER_URL}/auth/signup`, draft);
         return data;
     }

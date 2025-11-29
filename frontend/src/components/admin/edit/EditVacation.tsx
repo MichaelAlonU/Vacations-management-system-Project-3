@@ -9,24 +9,27 @@ import Spinner from "../../common/spinner/Spinner";
 import { updateVacationValidator } from "../../../../../backend/src/controllers/vacations/validator";
 import { joiResolver } from "@hookform/resolvers/joi";
 import SpinnerButton from "../../common/spinner-button/SpinnerButton";
-import { init } from "../../../redux/vacationSlice";
+import { init, updateVacation } from "../../../redux/vacationSlice";
+import useTitle from "../../../hooks/use-title";
 
 export default function EditVacation() {
 
+    useTitle('Vacations R Us - Edit Vacation');
     const { id } = useParams<'id'>();
     const vacation = useAppSelector(state => state.vacations.vacations.find(v => v.id === id));
     const dispatch = useAppDispatcher();
     const navigate = useNavigate();
     const vacationService = useService(VacationService);
-    const [isReady, setIsReady] = useState(false);
+    const [isReady, setIsReady] = useState<boolean>(false);
     const [preview, setPreview] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-    const { register, handleSubmit, reset, formState: { errors, isSubmitting } } =
+    const { register, handleSubmit, reset, formState: { errors }, setValue } =
         useForm<VacationDraft>({
             resolver: joiResolver(updateVacationValidator)
         });
 
-        useEffect(() => {
+    useEffect(() => {
         (async () => {
 
             let vac = vacation;
@@ -37,13 +40,15 @@ export default function EditVacation() {
                 vac = vacationsFromServer.find(v => v.id === id);
 
                 if (!vac) {
-                    alert("Vacation not found");
+                    alert("The desired vacation was not found");
                     navigate("/vacations");
                     return;
                 }
             }
-            const { destination, description, startTime, endTime, price} = vac
-            const draft = { destination, description, startTime, endTime, price, image: null }
+            let { destination, description, startTime, endTime, price } = vac
+            startTime = startTime.toString()
+            endTime = endTime.toString()
+            const draft = { id, destination, description, startTime, endTime, price, image: null }
             reset(draft)
 
             setIsReady(true);
@@ -62,14 +67,18 @@ export default function EditVacation() {
 
     async function submit(draft: VacationDraft) {
         try {
+            setIsSubmitting(true);
             if (draft.image) {
                 draft.image = (draft.image as unknown as FileList)[0];
             }
-            await vacationService.editVacation(id!, draft);
+            const vacation = await vacationService.editVacation(id!, draft);
+            dispatch(updateVacation(vacation))
             alert('Vacation updated successfully');
             navigate('/vacations');
         } catch (e) {
             alert(e);
+        } finally {
+            setIsSubmitting(false);
         }
     }
 
@@ -111,7 +120,7 @@ export default function EditVacation() {
                             vacation?.imageUrl && <img src={`${import.meta.env.VITE_S3_URL}${vacation?.imageUrl}`} style={{ width: 200, marginTop: 10 }} />
                         )}
                         <div className='formError'>{errors.image?.message}</div>
-                        <button type="button" onClick={() => { setPreview(null) }}> Remove Image </button>
+                        <button type="button" onClick={() => { setPreview(null), setValue("image", null) }}> Remove Image </button>
 
                         <SpinnerButton
                             buttonText='Update Vacation'
