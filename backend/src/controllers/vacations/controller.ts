@@ -34,6 +34,7 @@ export async function createNewVacation(req: Request, res: Response, next: NextF
 
 export async function updateVacation(req: Request<{ id: string }>, res: Response, next: NextFunction) {
     try {
+        console.log("Update vacation controller reached, req.body:", req.body, req.params);
         const vacation = await Vacation.findByPk(req.params.id);
         if (!vacation) return next({
             status: 404,
@@ -45,6 +46,7 @@ export async function updateVacation(req: Request<{ id: string }>, res: Response
         vacation.startTime = startTime
         vacation.endTime = endTime
         vacation.price = price
+        console.log(`req imageurl   `, req.imageUrl, `     ===req body image url`, req.body.imageUrl)
         if (req.imageUrl) {
             vacation.imageUrl = req.imageUrl;
         }

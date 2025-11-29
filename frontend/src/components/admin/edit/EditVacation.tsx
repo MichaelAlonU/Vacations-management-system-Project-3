@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import './EditVacation.css';
 import { useService } from "../../../hooks/use-service";
 import VacationService from "../../../services/auth-aware/VacationService";
 import { useAppDispatcher, useAppSelector } from "../../../redux/hooks";
@@ -11,6 +12,12 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import SpinnerButton from "../../common/spinner-button/SpinnerButton";
 import { init, updateVacation } from "../../../redux/vacationSlice";
 import useTitle from "../../../hooks/use-title";
+
+function toDatetimeLocal(value: string | Date) {
+    const d = new Date(value);
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().slice(0,16); // YYYY-MM-DDTHH:MM
+}
 
 export default function EditVacation() {
 
@@ -46,9 +53,12 @@ export default function EditVacation() {
                 }
             }
             let { destination, description, startTime, endTime, price } = vac
-            startTime = startTime.toString()
-            endTime = endTime.toString()
-            const draft = { id, destination, description, startTime, endTime, price, image: null }
+            const draft = {
+                destination, description,
+                startTime: toDatetimeLocal(startTime),
+                endTime: toDatetimeLocal(endTime),
+                price
+            }
             reset(draft)
 
             setIsReady(true);
@@ -66,13 +76,14 @@ export default function EditVacation() {
     }
 
     async function submit(draft: VacationDraft) {
+        console.log(`onSubmit data: `, draft)
         try {
             setIsSubmitting(true);
             if (draft.image) {
                 draft.image = (draft.image as unknown as FileList)[0];
             }
-            const vacation = await vacationService.editVacation(id!, draft);
-            dispatch(updateVacation(vacation))
+            const updatedVacation = await vacationService.editVacation(id!, draft);
+            dispatch(updateVacation(updatedVacation))
             alert('Vacation updated successfully');
             navigate('/vacations');
         } catch (e) {
@@ -120,7 +131,7 @@ export default function EditVacation() {
                             vacation?.imageUrl && <img src={`${import.meta.env.VITE_S3_URL}${vacation?.imageUrl}`} style={{ width: 200, marginTop: 10 }} />
                         )}
                         <div className='formError'>{errors.image?.message}</div>
-                        <button type="button" onClick={() => { setPreview(null), setValue("image", null) }}> Remove Image </button>
+                        {/* <button type="button" onClick={() => { setValue("image", null); setPreview(null);  }}> Remove Image </button> */}
 
                         <SpinnerButton
                             buttonText='Update Vacation'

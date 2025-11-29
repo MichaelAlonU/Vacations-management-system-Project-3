@@ -37,7 +37,21 @@ export const updateVacationValidator = Joi.object({
     startTime: Joi.date().required(),
     endTime: Joi.date().required().min(Joi.ref('startTime')),
     price: Joi.number().min(1).max(10000).required(),
+    image: Joi.any().optional()
+})
 
+export const updateVacationImageValidator = Joi.object({
+    // image: Joi.object({
+    //     mimetype: Joi.string().valid('image/jpeg', 'image/png')
+    // }).unknown(true).required()
+
+    image: Joi.object<UploadedFile>({
+        mimetype: Joi.string()
+            .valid('image/jpeg', 'image/png')
+            .messages({
+                'any.only': 'Image must be a JPEG or PNG file',
+            }),
+    }).unknown(true).optional()
 })
 
 

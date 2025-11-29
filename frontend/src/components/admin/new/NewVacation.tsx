@@ -8,11 +8,13 @@ import { useService } from '../../../hooks/use-service';
 import { useNavigate } from 'react-router-dom';
 import SpinnerButton from '../../common/spinner-button/SpinnerButton';
 import { useState } from 'react';
+import { useAppDispatcher } from '../../../redux/hooks';
+import { newVacation } from '../../../redux/vacationSlice';
 
 export default function NewVacation() {
     const vacationService = useService(VacationService);
     const navigate = useNavigate();
-
+    const dispatch = useAppDispatcher();
     const { register, handleSubmit, reset, setValue, trigger, formState: { errors, isSubmitting } } = useForm<VacationDraft>({
         resolver: joiResolver(createNewVacationValidator),
         defaultValues: {
@@ -46,7 +48,8 @@ export default function NewVacation() {
             return;
         }
         try {
-            await vacationService.newVacation(data);
+            const newVac = await vacationService.newVacation(data);
+            dispatch(newVacation(newVac));
             alert('Vacation created');
             reset();
             navigate('/vacations/manage');
