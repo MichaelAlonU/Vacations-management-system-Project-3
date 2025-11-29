@@ -12,23 +12,23 @@ export const createNewVacationValidator = Joi.object({
 }).unknown(true);
 
 export const newVacationImageValidator = Joi.object({
-    image: Joi.object({
-        mimetype: Joi.string().valid('image/jpeg', 'image/png')
-    }).unknown(true).required()
+    // image: Joi.object({
+    //     mimetype: Joi.string().valid('image/jpeg', 'image/png')
+    // }).unknown(true).required()
 
-    // image: Joi.object<UploadedFile>({
-    //     mimetype: Joi.string()
-    //         .valid('image/jpeg', 'image/png')
-    //         .required()
-    //         .messages({
-    //             'any.only': 'Image must be a JPEG or PNG file',
-    //             'any.required': 'Image is required!',
-    //         }),
-    // }).unknown(true)
-    //     .required()
-    //     .messages({
-    //         'any.required': 'Image is required!!!',
-    //     }),
+    image: Joi.object<UploadedFile>({
+        mimetype: Joi.string()
+            .valid('image/jpeg', 'image/png')
+            .required()
+            .messages({
+                'any.only': 'Image must be a JPEG or PNG file',
+                'any.required': 'Image is required!',
+            }),
+    }).unknown(true)
+        .required()
+        .messages({
+            'any.required': 'Image is required!!!',
+        }),
 })
 
 export const updateVacationValidator = Joi.object({
