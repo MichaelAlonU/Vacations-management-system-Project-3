@@ -1,16 +1,16 @@
 .VacationCard {
     background: var(--card-bg);
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-sm);
     transition: var(--transition);
     display: flex;
     flex-direction: column;
     height: 100%;
-    animation: scaleIn 0.4s ease-out;
+    animation: fadeIn 0.3s ease-out;
 }
 
-@keyframes scaleIn {
+@keyframes fadeIn {
     from {
         opacity: 0;
         transform: scale(0.95);
@@ -22,117 +22,141 @@
 }
 
 .VacationCard:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
 }
 
 .VacationCard img {
     width: 100%;
-    height: 200px;
+    height: 153px;
     object-fit: cover;
     transition: var(--transition);
 }
 
 .VacationCard:hover img {
-    transform: scale(1.05);
     filter: brightness(0.9);
 }
 
-.VacationCard h3 {
+.card-content {
+    padding: 1.016rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.508rem;
+}
+
+.card-content h4 {
+    margin: 0;
+    font-size: 1.21rem;
     color: var(--text-primary);
-    font-size: 1.25rem;
-    margin: 1rem 1rem 0.5rem;
     font-weight: 700;
+    line-height: 1.2;
 }
 
-.VacationCard p {
+.card-info {
+    display: flex;
+    gap: 0.636rem;
+    font-size: 1.016rem;
     color: var(--text-secondary);
-    margin: 0.5rem 1rem;
-    font-size: 0.95rem;
-    line-height: 1.5;
 }
 
-.VacationCard p:last-of-type {
+.card-info .price {
     color: var(--primary-color);
     font-weight: 600;
-    font-size: 1.25rem;
-    margin: 0.5rem 1rem 1rem;
 }
 
-.VacationCard .followers-count {
+.card-info .date {
+    font-size: 0.956rem;
+}
+
+.card-content p {
+    margin: 0;
+    font-size: 0.956rem;
     color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin: 0.5rem 1rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-footer {
+    padding: 0.763rem 1.016rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 0.636rem;
+}
+
+.followers-count {
+    font-size: 0.956rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.btn-group {
+    display: flex;
     gap: 0.4rem;
 }
 
-.VacationCard button {
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    font-weight: 600;
+.btn-group button {
+    flex: 1;
+    padding: 0.508rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.5);
     cursor: pointer;
     transition: var(--transition);
-    margin: 0.5rem 1rem;
-    font-size: 0.95rem;
+    font-size: 1.016rem;
+    min-width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.VacationCard button:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+.btn-group button:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.05);
 }
 
-.VacationCard button.liked {
-    background: var(--danger-color);
+.btn-like {
+    border-color: var(--danger-color) !important;
 }
 
-.VacationCard button.liked:hover {
-    background: #dc2626;
+.btn-like.liked {
+    background: var(--danger-color) !important;
+    border-color: var(--danger-color) !important;
 }
 
-.VacationCard .edit-btn {
-    background: var(--warning-color);
+.btn-edit {
+    border-color: var(--warning-color) !important;
 }
 
-.VacationCard .edit-btn:hover {
-    background: #d97706;
+.btn-delete {
+    border-color: var(--danger-color) !important;
 }
 
-.VacationCard .delete-btn {
-    background: var(--danger-color);
-}
-
-.VacationCard .delete-btn:hover {
-    background: #dc2626;
-}
-
-/* Like button with emoji */
-.VacationCard button {
-    font-size: 1.5rem;
-    padding: 0.5rem;
-    width: calc(100% - 2rem);
-}
-
-/* Responsive */
 @media (max-width: 480px) {
     .VacationCard {
-        border-radius: 8px;
+        border-radius: 6px;
     }
 
     .VacationCard img {
-        height: 150px;
+        height: 128px;
     }
 
-    .VacationCard h3 {
-        font-size: 1.1rem;
+    .card-content {
+        padding: 0.763rem;
+        gap: 0.382rem;
     }
 
-    .VacationCard p {
-        font-size: 0.9rem;
+    .card-content h4 {
+        font-size: 1.077rem;
+    }
+
+    .card-footer {
+        padding: 0.636rem 0.763rem;
     }
 }

@@ -54,33 +54,32 @@ export default function VacationCard({ vacation, isEditAllowed, isDeleteAllowed,
 
     return (
         <div className="VacationCard">
-            <h3>{vacation.destination}</h3>
             <img src={`${import.meta.env.VITE_S3_URL}${vacation.imageUrl}`} alt={vacation.destination} />
-            <p>{vacation.description}</p>
-            <p>{vacation.price}$</p>
-            <p>Start: {new Date(vacation.startTime).toLocaleDateString()}</p>
-            <p>End: {new Date(vacation.endTime).toLocaleDateString()}</p>
-
-            {isLikeAllowed && (
-                <div>
-                    <p className="followers-count">👥 {vacation.followers?.length || 0} followers</p>
-                    <button
-                        className={isLikedByCurrentUser ? "liked" : ""}
-                        style={{ color: isLikedByCurrentUser ? 'red' : 'black' }}
-                        onClick={toggleLike}
-                    >
-                        {isLikedByCurrentUser ? "❤️" : "🤍"}
-                    </button>
+            <div className="card-content">
+                <h4>{vacation.destination} </h4>
+                <h6>                    <span className="date">{new Date(vacation.startTime).toLocaleDateString()} - {new Date(vacation.endTime).toLocaleDateString()}</span>
+</h6>
+                <div className="card-info">
+                    <span className="price">${vacation.price}</span>
                 </div>
-            )}
-
-            {isEditAllowed && (
-                <button className="edit-btn" onClick={() => navigate(`/vacations/edit/${vacation.id}`)}>Edit</button>
-            )}
-
-            {isDeleteAllowed && (
-                <button className="delete-btn" onClick={() => handleDelete(vacation.id)}>Delete</button>
-            )}
+                <p>{vacation.description.substring(0, 50)}...</p>
+            </div>
+            <div className="card-footer">
+                {isLikeAllowed && <span className="followers-count">{vacation.followers?.length || 0} 👥</span>}
+                <div className="btn-group">
+                    {isLikeAllowed && (
+                        <button className={`btn-like ${isLikedByCurrentUser ? 'liked' : ''}`} onClick={toggleLike}>
+                            {isLikedByCurrentUser ? "❤️" : "🤍"}
+                        </button>
+                    )}
+                    {isEditAllowed && (
+                        <button className="btn-edit" onClick={() => navigate(`/vacations/edit/${vacation.id}`)}>✏️</button>
+                    )}
+                    {isDeleteAllowed && (
+                        <button className="btn-delete" onClick={() => handleDelete(vacation.id)}>🗑️</button>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }

@@ -63,52 +63,61 @@ export default function Vacations() {
 
     return (
         <div className='Vacations'>
-            <div className="filters" style={{ marginBottom: '1rem' }}>
-                <label>
+            <div className="filters-section">
+                <label className="filter-label">
                     <input
                         type="checkbox"
+                        className="filter-checkbox"
                         checked={followedOnly}
                         onChange={e => { setFollowedOnly(e.target.checked); setCurrentPage(1); }}
-                    /> Only Followed
+                    />
+                    <span>Only Followed</span>
                 </label>
-                <label style={{ marginLeft: '1rem' }}>
+                <label className="filter-label">
                     <input
                         type="checkbox"
+                        className="filter-checkbox"
                         checked={upcomingOnly}
                         onChange={e => { setUpcomingOnly(e.target.checked); setCurrentPage(1); }}
-                    /> Upcoming Only
+                    />
+                    <span>Upcoming Only</span>
                 </label>
-                <label style={{ marginLeft: '1rem' }}>
+                <label className="filter-label">
                     <input
                         type="checkbox"
+                        className="filter-checkbox"
                         checked={activeOnly}
                         onChange={e => { setActiveOnly(e.target.checked); setCurrentPage(1); }}
-                    /> Active Now
+                    />
+                    <span>Active Now</span>
                 </label>
             </div>
 
             {paginatedVacations.length > 0 ? (
                 <>
-                    {paginatedVacations.map(vac => (
-                        <VacationCard
-                            key={vac.id}
-                            vacation={vac}
-                            isEditAllowed={isAdmin}
-                            isDeleteAllowed={isAdmin}
-                            isLikeAllowed={!isAdmin}
-                        />
-                    ))}
+                    <div className="vacation-cards-grid">
+                        {paginatedVacations.map(vac => (
+                            <VacationCard
+                                key={vac.id}
+                                vacation={vac}
+                                isEditAllowed={isAdmin}
+                                isDeleteAllowed={isAdmin}
+                                isLikeAllowed={!isAdmin}
+                            />
+                        ))}
+                    </div>
 
-                    {/* Pagination controls */}
-                    <div style={{ marginTop: '1rem' }}>
+                    <div className="pagination-section">
                         <button
+                            className="pagination-btn"
                             disabled={currentPage === 1}
                             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                         >
                             Prev
                         </button>
-                        <span style={{ margin: '0 1rem' }}>{currentPage} / {totalPages}</span>
+                        <span className="pagination-info">{currentPage} / {totalPages}</span>
                         <button
+                            className="pagination-btn"
                             disabled={currentPage === totalPages}
                             onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                         >
