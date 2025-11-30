@@ -1,7 +1,6 @@
 import './NewVacation.css';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
-import { createNewVacationValidator } from './../../../../../backend/src/controllers/vacations/validator';
 import VacationDraft from '../../../models/VacationDraft';
 import VacationService from '../../../services/auth-aware/VacationService';
 import { useService } from '../../../hooks/use-service';
@@ -10,12 +9,13 @@ import SpinnerButton from '../../common/spinner-button/SpinnerButton';
 import { useState } from 'react';
 import { useAppDispatcher } from '../../../redux/hooks';
 import { newVacation } from '../../../redux/vacationSlice';
+import { createNewVacationValidator } from '../validator';
 
 export default function NewVacation() {
     const vacationService = useService(VacationService);
     const navigate = useNavigate();
     const dispatch = useAppDispatcher();
-    const { register, handleSubmit, reset, setValue, trigger, formState: { errors, isSubmitting } } = useForm<VacationDraft>({
+    const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<VacationDraft>({
         resolver: joiResolver(createNewVacationValidator),
         defaultValues: {
             destination: '',

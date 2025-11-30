@@ -7,11 +7,11 @@ import VacationDraft from "../../../models/VacationDraft";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Spinner from "../../common/spinner/Spinner";
-import { updateVacationValidator } from "../../../../../backend/src/controllers/vacations/validator";
 import { joiResolver } from "@hookform/resolvers/joi";
 import SpinnerButton from "../../common/spinner-button/SpinnerButton";
 import { init, updateVacation } from "../../../redux/vacationSlice";
 import useTitle from "../../../hooks/use-title";
+import { updateVacationValidator } from "../validator";
 
 function toDatetimeLocal(value: string | Date) {
     const d = new Date(value);
@@ -31,7 +31,7 @@ export default function EditVacation() {
     const [preview, setPreview] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-    const { register, handleSubmit, reset, formState: { errors }, setValue } =
+    const { register, handleSubmit, reset, formState: { errors } } =
         useForm<VacationDraft>({
             resolver: joiResolver(updateVacationValidator)
         });

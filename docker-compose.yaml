@@ -8,7 +8,7 @@ services:
     container_name: vacations-are-us-db-compose
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
-      - MYSQL_DATABASE=teams_meetings_db
+      - MYSQL_DATABASE=vacations_are_us_dbdocker
       - MYSQL_TCP_PORT=3306
     ports:
       - "3309:3306"
