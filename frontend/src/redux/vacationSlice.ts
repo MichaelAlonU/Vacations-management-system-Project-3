@@ -18,20 +18,24 @@ export const vacationSlice = createSlice({
         init: (state, action: PayloadAction<Vacation[]>) => {
             state.vacations = action.payload;
         },
-        follow: (state, action: PayloadAction<{ id: string; userId: string }>) => {
-            const idx = state.vacations.findIndex(v => v.id === action.payload.id);
-            if (idx > -1) { // shouldn't we add to the if - && not isFollowed=true to make sure he is not already following ?
-                state.vacations[idx].isFollowed = true;
-                state.vacations[idx].followers?.push({ id: action.payload.userId });
-            }
+        addFollower: (state, action: PayloadAction<{ vacId: string; userId: string }>) => {
+            const v = state.vacations.find(v => v.id === action.payload.vacId);
+            if (v) v.followers?.push({ id: action.payload.userId });
         },
-        unfollow: (state, action: PayloadAction<{ id: string; userId: string }>) => {
-            const idx = state.vacations.findIndex(v => v.id === action.payload.id);
-            if (idx > -1) {
-                state.vacations[idx].isFollowed = false;
-                state.vacations[idx].followers = state.vacations[idx].followers?.filter(follower => follower.id !== action.payload.userId);
-            }
+        removeFollower: (state, action: PayloadAction<{ vacId: string; userId: string }>) => {
+            const v = state.vacations.find(v => v.id === action.payload.vacId);
+            if (v) v.followers = v.followers?.filter(f => f.id !== action.payload.userId);
         },
+        markFollowedByCurrentUser: (state, action: PayloadAction<{ vacId: string}>) => {
+            const v = state.vacations.find(v => v.id === action.payload.vacId);
+            if (v) v.isFollowed = true;
+        },
+
+        markUnfollowedByCurrentUser: (state, action: PayloadAction<{ vacId: string}>) => {
+            const v = state.vacations.find(v => v.id === action.payload.vacId);
+            if (v) v.isFollowed = false;
+        },
+
         newVacation: (state, action: PayloadAction<Vacation>) => {
             // state.posts = [action.payload, ...state.posts]
             // state.newVacation = action.payload;
@@ -44,15 +48,10 @@ export const vacationSlice = createSlice({
         deleteVacation: (state, action: PayloadAction<string>) => {
             state.vacations = state.vacations.filter(p => p.id !== action.payload);
         },
-        // postAged: (state) => {
-        //     if (state.newPost) {
-        //         state.posts = [state.newPost, ...state.posts];
-        //         state.newPost = undefined;
-        //     }
-        // }
+
     }
 });
 
-export const { init, newVacation, updateVacation, deleteVacation, follow, unfollow } = vacationSlice.actions;
+export const { init, newVacation, updateVacation, deleteVacation, addFollower, removeFollower, markFollowedByCurrentUser, markUnfollowedByCurrentUser } = vacationSlice.actions;
 
 export default vacationSlice.reducer;

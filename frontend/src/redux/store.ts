@@ -1,12 +1,37 @@
 import { configureStore } from "@reduxjs/toolkit";
-import vacationSlice from "./vacationSlice";
+import vacationSlice, { addFollower, removeFollower, markFollowedByCurrentUser, markUnfollowedByCurrentUser } from "./vacationSlice";
 import authSlice from "./auth-slice";
+import socket, { clientId } from "../../io/io";
+import { jwtDecode } from "jwt-decode";
 
 const store = configureStore({
     reducer: {
         auth: authSlice,
         vacations: vacationSlice,
     }
+});
+
+interface JwtPayload { id: string }
+
+const token = localStorage.getItem('jwt');
+const currentUserId = token ? jwtDecode<JwtPayload>(token).id : null;
+
+socket.on("vacation-like", (payload: any) => {
+    if (payload.from === clientId) return;
+    if (payload.type === "follow") {
+        store.dispatch(addFollower({ vacId: payload.vacationId, userId: payload.userId }));
+    } else {
+        store.dispatch(removeFollower({ vacId: payload.vacationId, userId: payload.userId }));
+    }
+
+    if (payload.userId === currentUserId) {
+        store.dispatch(
+            payload.type === "follow"
+                ? markFollowedByCurrentUser({ vacId: payload.vacationId })
+                : markUnfollowedByCurrentUser({ vacId: payload.vacationId })
+        );
+    }
+
 });
 
 export default store;

@@ -24,5 +24,9 @@
             },
             "forcePathStyle": true
         }
+    },
+    "io": {
+        "host": "localhost",
+        "port": 3004
     }
 }
