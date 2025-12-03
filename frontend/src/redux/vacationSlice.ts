@@ -26,12 +26,12 @@ export const vacationSlice = createSlice({
             const v = state.vacations.find(v => v.id === action.payload.vacId);
             if (v) v.followers = v.followers?.filter(f => f.id !== action.payload.userId);
         },
-        markFollowedByCurrentUser: (state, action: PayloadAction<{ vacId: string}>) => {
+        markFollowedByCurrentUser: (state, action: PayloadAction<{ vacId: string }>) => {
             const v = state.vacations.find(v => v.id === action.payload.vacId);
             if (v) v.isFollowed = true;
         },
 
-        markUnfollowedByCurrentUser: (state, action: PayloadAction<{ vacId: string}>) => {
+        markUnfollowedByCurrentUser: (state, action: PayloadAction<{ vacId: string }>) => {
             const v = state.vacations.find(v => v.id === action.payload.vacId);
             if (v) v.isFollowed = false;
         },
@@ -43,7 +43,10 @@ export const vacationSlice = createSlice({
         },
         updateVacation: (state, action: PayloadAction<Vacation>) => {
             const idx = state.vacations.findIndex(p => p.id === action.payload.id);
-            if (idx > -1) state.vacations[idx] = action.payload;
+            if (idx > -1) {
+                const oldVal = state.vacations[idx].isFollowed;
+                state.vacations[idx] = { ...action.payload, isFollowed: oldVal };
+            } 
         },
         deleteVacation: (state, action: PayloadAction<string>) => {
             state.vacations = state.vacations.filter(p => p.id !== action.payload);

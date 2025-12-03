@@ -1,8 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import vacationSlice, { addFollower, removeFollower, markFollowedByCurrentUser, markUnfollowedByCurrentUser } from "./vacationSlice";
 import authSlice from "./auth-slice";
-import socket, { clientId } from "../../io/io";
+import socket from "../../io/io";
 import { jwtDecode } from "jwt-decode";
+import { v4 as uuid } from "uuid";
+
+export const clientId = uuid();
 
 const store = configureStore({
     reducer: {
@@ -13,10 +16,14 @@ const store = configureStore({
 
 interface JwtPayload { id: string }
 
-const token = localStorage.getItem('jwt');
-const currentUserId = token ? jwtDecode<JwtPayload>(token).id : null;
+// const token = localStorage.getItem('jwt');
+// const currentUserId = token ? jwtDecode<JwtPayload>(token).id : null;
 
 socket.on("vacation-like", (payload: any) => {
+    const token = localStorage.getItem('jwt');
+    const currentUserId = token ? jwtDecode<JwtPayload>(token).id : null;
+
+    console.log("Recieved vacation like event from socket, in store  clientID: ", clientId, "== currentUserId", currentUserId)
     if (payload.from === clientId) return;
     if (payload.type === "follow") {
         store.dispatch(addFollower({ vacId: payload.vacationId, userId: payload.userId }));

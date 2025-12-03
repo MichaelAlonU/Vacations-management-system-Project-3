@@ -1,27 +1,33 @@
 import './VacationCard.css';
 import { useAppDispatcher } from '../../../redux/hooks';
 import { useService } from '../../../hooks/use-service';
-import { follow, unfollow, deleteVacation, updateVacation } from '../../../redux/vacationSlice';
+import { addFollower, deleteVacation, markFollowedByCurrentUser, markUnfollowedByCurrentUser, removeFollower, updateVacation, } from '../../../redux/vacationSlice';
 import { useNavigate } from 'react-router';
 import VacationService from '../../../services/auth-aware/VacationService';
-import { jwtDecode } from 'jwt-decode';
+// import { jwtDecode } from 'jwt-decode';
+import { clientId } from '../../../redux/store'
+import socket from '../../../../io/io';
+
+console.log("Client ID:", clientId);
 
 interface Props {
     vacation: any;
+    currentUserId?: string;
     isEditAllowed: boolean;
     isDeleteAllowed: boolean;
     isLikeAllowed: boolean;
 }
 
-interface JwtPayload { id: string }
+// interface JwtPayload { id: string }
 
-export default function VacationCard({ vacation, isEditAllowed, isDeleteAllowed, isLikeAllowed }: Props) {
+export default function VacationCard({ vacation, currentUserId, isEditAllowed, isDeleteAllowed, isLikeAllowed }: Props) {
     const dispatcher = useAppDispatcher();
     const vacationService = useService(VacationService);
     const navigate = useNavigate();
 
-    const token = localStorage.getItem('jwt');
-    const currentUserId = token ? jwtDecode<JwtPayload>(token).id : null;
+    // const token = localStorage.getItem('jwt');
+    // const currentUserId = token ? jwtDecode<JwtPayload>(token).id : null;
+
     async function handleDelete(id: string) {
         if (!confirm("Are you sure you want to delete this vacation?")) return;
         try {
@@ -36,15 +42,32 @@ export default function VacationCard({ vacation, isEditAllowed, isDeleteAllowed,
     async function toggleLike() {
         if (!currentUserId) return;
         try {
-            let updatedVacation;
             if (vacation.followers?.find((f: any) => f.id === currentUserId)) {
-                updatedVacation = await vacationService.unfollow(vacation.id);
-                dispatcher(unfollow({ id: vacation.id, userId: currentUserId }));
+                await vacationService.unfollow(vacation.id);
+                console.log(`Current User ID: ${currentUserId} from unfollow...`)
+                dispatcher(removeFollower({ vacId: vacation.id, userId: currentUserId }));
+                dispatcher(markUnfollowedByCurrentUser({ vacId: vacation.id }))
+
+                socket.emit("vacation-like", {
+                    type: "unfollow",
+                    vacationId: vacation.id,
+                    userId: currentUserId,
+                    from: clientId
+                });
+
             } else {
-                updatedVacation = await vacationService.follow(vacation.id);
-                dispatcher(follow({ id: vacation.id, userId: currentUserId }));
+                await vacationService.follow(vacation.id);
+                console.log(`Current User ID: ${currentUserId} from follow...`)
+                dispatcher(addFollower({ vacId: vacation.id, userId: currentUserId }));
+                dispatcher(markFollowedByCurrentUser({ vacId: vacation.id }));
+                socket.emit("vacation-like", {
+                    type: "follow",
+                    vacationId: vacation.id,
+                    userId: currentUserId,
+                    from: clientId
+                });
+
             }
-            dispatcher(updateVacation(updatedVacation));
         } catch (err) {
             alert(err);
         }
@@ -58,7 +81,7 @@ export default function VacationCard({ vacation, isEditAllowed, isDeleteAllowed,
             <div className="card-content">
                 <h4>{vacation.destination} </h4>
                 <h6>                    <span className="date">{new Date(vacation.startTime).toLocaleDateString()} - {new Date(vacation.endTime).toLocaleDateString()}</span>
-</h6>
+                </h6>
                 <div className="card-info">
                     <span className="price">${vacation.price}</span>
                 </div>

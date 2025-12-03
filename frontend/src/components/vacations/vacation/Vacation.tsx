@@ -15,10 +15,11 @@ export default function Vacations() {
     const vacationService = useService(VacationService);
     const vacations = useAppSelector((state: RootState) => state.vacations.vacations);
     const isAdmin = useAppSelector((state: RootState) => state.auth.user.isAdmin);
+    const currentUserId = useAppSelector((state: RootState) => state.auth.user.id);
     const dispatcher = useAppDispatcher();
 
-    const token = localStorage.getItem('jwt');
-    const currentUserId = token ? JSON.parse(atob(token.split('.')[1])).id : null;
+    // const token = localStorage.getItem('jwt');
+    // const currentUserId = token ? JSON.parse(atob(token.split('.')[1])).id : null;
 
     // Pagination
     const ITEMS_PER_PAGE = 10;
@@ -100,6 +101,7 @@ export default function Vacations() {
                             <VacationCard
                                 key={vac.id}
                                 vacation={vac}
+                                currentUserId={currentUserId}
                                 isEditAllowed={isAdmin}
                                 isDeleteAllowed={isAdmin}
                                 isLikeAllowed={!isAdmin}
