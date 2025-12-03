@@ -1,10 +1,9 @@
 import './VacationCard.css';
 import { useAppDispatcher } from '../../../redux/hooks';
 import { useService } from '../../../hooks/use-service';
-import { addFollower, deleteVacation, markFollowedByCurrentUser, markUnfollowedByCurrentUser, removeFollower, updateVacation, } from '../../../redux/vacationSlice';
+import { addFollower, deleteVacation, markFollowedByCurrentUser, markUnfollowedByCurrentUser, removeFollower } from '../../../redux/vacationSlice';
 import { useNavigate } from 'react-router';
 import VacationService from '../../../services/auth-aware/VacationService';
-// import { jwtDecode } from 'jwt-decode';
 import { clientId } from '../../../redux/store'
 import socket from '../../../../io/io';
 
@@ -18,15 +17,11 @@ interface Props {
     isLikeAllowed: boolean;
 }
 
-// interface JwtPayload { id: string }
 
 export default function VacationCard({ vacation, currentUserId, isEditAllowed, isDeleteAllowed, isLikeAllowed }: Props) {
     const dispatcher = useAppDispatcher();
     const vacationService = useService(VacationService);
     const navigate = useNavigate();
-
-    // const token = localStorage.getItem('jwt');
-    // const currentUserId = token ? jwtDecode<JwtPayload>(token).id : null;
 
     async function handleDelete(id: string) {
         if (!confirm("Are you sure you want to delete this vacation?")) return;
