@@ -32,7 +32,13 @@ services:
     depends_on:
       database:
         condition: service_healthy
-        
+
+  io:
+    container_name: vacations-are-us-io-compose
+    ports:
+      - "3022:3004"
+    build: ./io
+
 # docker run --name weezer-frontend -d -p 3011:5173 shaharsol/weezer-frontend:1.0.1
   frontend:
     container_name: vacations-are-us-frontend-compose

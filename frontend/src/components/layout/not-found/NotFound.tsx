@@ -1,9 +1,10 @@
 import './NotFound.css';
-
+import notFoundImage from '../../../assets/forbidden.jpg'
 export default function NotFound() {
     return (
         <div className='NotFound'>
-            404 not found, where is your head?
+            <h1> - 404 -</h1>
+            <img src={notFoundImage}></img>
         </div>
     );
 }

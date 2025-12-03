@@ -12,9 +12,6 @@ export const createNewVacationValidator = Joi.object({
 }).unknown(true);
 
 export const newVacationImageValidator = Joi.object({
-    // image: Joi.object({
-    //     mimetype: Joi.string().valid('image/jpeg', 'image/png')
-    // }).unknown(true).required()
 
     image: Joi.object<UploadedFile>({
         mimetype: Joi.string()
@@ -41,9 +38,6 @@ export const updateVacationValidator = Joi.object({
 })
 
 export const updateVacationImageValidator = Joi.object({
-    // image: Joi.object({
-    //     mimetype: Joi.string().valid('image/jpeg', 'image/png')
-    // }).unknown(true).required()
 
     image: Joi.object<UploadedFile>({
         mimetype: Joi.string()

@@ -2,8 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import Follow from "../../models/Follow";
 import Vacation from "../../models/Vacation";
 import User from "../../models/User";
-// import socket from "../../io/io";
-// import SocketMessages from "socket-enums-shaharsolllllll";
 
 export async function follow(req: Request<{ vacationId: string }>, res: Response, next: NextFunction) {
     try {
@@ -28,12 +26,6 @@ export async function follow(req: Request<{ vacationId: string }>, res: Response
         });
 
         res.json(vacation);
-
-        // socket.emit(SocketMessages.NewFollow, {
-        //     from: req.get('x-client-id'),
-        //     followee,
-        //     follower
-        // })
 
     } catch (e) {
         if (e.message === 'follow already exists') return next({

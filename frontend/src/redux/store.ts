@@ -16,14 +16,10 @@ const store = configureStore({
 
 interface JwtPayload { id: string }
 
-// const token = localStorage.getItem('jwt');
-// const currentUserId = token ? jwtDecode<JwtPayload>(token).id : null;
-
 socket.on("vacation-like", (payload: any) => {
     const token = localStorage.getItem('jwt');
     const currentUserId = token ? jwtDecode<JwtPayload>(token).id : null;
 
-    console.log("Recieved vacation like event from socket, in store  clientID: ", clientId, "== currentUserId", currentUserId)
     if (payload.from === clientId) return;
     if (payload.type === "follow") {
         store.dispatch(addFollower({ vacId: payload.vacationId, userId: payload.userId }));

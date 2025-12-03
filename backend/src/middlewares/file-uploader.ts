@@ -16,20 +16,6 @@ declare global {
 }
 
 export default async function fileUploader(req: Request, res: Response, next: NextFunction) {
-    console.log("=== HEADERS ===");
-    console.log(req.headers);
-
-    console.log("=== CONTENT-TYPE ===");
-    console.log(req.headers['content-type']);
-
-    console.log("=== METHOD & URL ===");
-    console.log("method: ", req.method, "URL:", req.url);
-
-    console.log(`=======body :  ========`)
-    console.log(req.body)
-
-    console.log(`=======req files:  ========`)
-    console.log(req.files)
 
     if (!req.files) return next()
     if (!req.files.image) return next()

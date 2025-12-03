@@ -10,10 +10,6 @@ const server = new Server({
 server.on('connection', socket => {
     console.log('client connected...')
 
-    // socket.onAny((eventName: string, payload: any) => {
-    //     console.log(`received event ${eventName} with payload:`, payload)
-    //     server.emit(eventName, payload)
-    // })
     socket.on('vacation-like', (payload: any) => {
         server.emit('vacation-like', payload); 
     });
