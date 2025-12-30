@@ -3,7 +3,6 @@ version: '3.8'
 # services - here i am going to list containers that i want to build
 # each service, actually describes a docker run command
 services:
-  # docker run --name weezer-db -d -e MYSQL_ALLOW_EMPTY_PASSWORD=1 -e MYSQL_DATABASE=weezer -e MYSQL_TCP_PORT=3306 -p 3308:3306 shaharsol/weezer-db:1.0.0
   database:
     container_name: vacations-are-us-db-compose
     environment:
@@ -12,7 +11,6 @@ services:
       - MYSQL_TCP_PORT=3306
     ports:
       - "3309:3306"
-    #image: shaharsol/weezer-db:1.0.0
     build: ./database
     volumes:
       - mysql_data:/var/lib/mysql
@@ -23,7 +21,6 @@ services:
       retries: 5
       start_period: 30s
   
-  # docker run --name weezer-backend -d -e NODE_ENV=docker  -p 3010:3000 shaharsol/weezer-backend:3.0.0
   backend:
     container_name: vacations-are-us-backend-compose
     environment:
@@ -41,7 +38,6 @@ services:
       - "3022:3004"
     build: ./io
 
-# docker run --name weezer-frontend -d -p 3011:5173 shaharsol/weezer-frontend:1.0.1
   frontend:
     container_name: vacations-are-us-frontend-compose
     ports: 

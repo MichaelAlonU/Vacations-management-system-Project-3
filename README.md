@@ -1,9 +1,12 @@
+# Vacations Are Us
+
+## 🚀 [Live Demo - View the App](https://michaelalonu.github.io/vercel-front)
+
 ## Overview
 
 Vacations Are Us is a full-stack web application for managing and booking vacation packages.
 The project demonstrates end-to-end development including authentication, role-based access control,
 REST APIs, real-time communication, database design, and containerized deployment.
-
 
 ### Key Features
 - JWT-based authentication and role-based authorization (User / Admin)
@@ -16,8 +19,6 @@ REST APIs, real-time communication, database design, and containerized deploymen
 ## Tech Stack Overview
 React + TypeScript frontend, Node.js + Express backend, MySQL database,
 real-time communication with Socket.IO, and full Dockerized environment.
-
-## Tech Stack
 
 ### Backend
 - **Runtime**: Node.js with TypeScript
@@ -89,7 +90,7 @@ real-time communication with Socket.IO, and full Dockerized environment.
 
 #### 1. Clone the Repository
 ```bash
-git clone <repository-url>
+git clone <https://github.com/MichaelAlonU/Vacations-management-system-Project-3>
 cd 45782-1-project-3
 ```
 
@@ -272,8 +273,6 @@ npm run build
 npm start
 ```
 
-API testing can be done using the included Postman collection.
-
 ## Troubleshooting
 
 ### Port Already in Use
@@ -297,14 +296,13 @@ kill -9 <PID>
 - Check AWS credentials in configuration
 - Ensure bucket exists in S3
 
-## License
+## Application View
+Example of the application UI
+![UI Screenshot](image.png)
 
-ISC
+## Links:
+🚀 [Live Demo - View the App](https://michaelalonu.github.io/vercel-front)
 
 ## Author
 
 Michael Uzan
-
-## Support
-
-For issues and questions, please create an issue in the repository.
